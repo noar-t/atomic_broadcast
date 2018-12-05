@@ -4,6 +4,7 @@ import socket
 import time
 import multiprocessing as mp
 
+
 class Channel(object):
 
     def __init__(self, hosts, port, out_queue):
@@ -20,7 +21,8 @@ class Channel(object):
         self.hosts = hosts
         self.port = port
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        #os.inhertiable?
+
+        # os.inhertiable?
 
         self.msg_queue = out_queue
         self.__listener = mp.Process(target=self.__recv_worker, daemon=True)
@@ -31,19 +33,18 @@ class Channel(object):
         for host in self.hosts:
             self.socket.sendto(message, (host, self.port))
 
-    #def get_message(self):
-    #    """ Block until a message is received """
-    #    return self.msg_queue.get()
+    # def get_message(self):
+       # """ Block until a message is received """
+       # return self.msg_queue.get()
 
-    #@property
-    #def queue(self):
-    #    return self.msg_queue
+    # @property
+    # def queue(self):
+       # return self.msg_queue
 
     def __recv_worker(self):
         """ Configures the socket for the channel to listen """
         self.socket.bind((socket.gethostname(), self.port))
         self.__recv_loop()
-
 
     # TODO time stamp the msg immediately then check timelyness before sending
     # TODO Put msg into queue immediately
@@ -54,7 +55,6 @@ class Channel(object):
         while data:
             data, _ = self.socket.recvfrom(1024)
             self.msg_queue.put((time.time(), data))
-
 
         return buf
 

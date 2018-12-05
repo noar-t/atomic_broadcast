@@ -1,6 +1,7 @@
 import multiprocessing as mp
 from channel import Channel, Message
 
+
 class AtomicBroadcaster(object):
 
     def __init__(self, hosts, ports):
@@ -14,10 +15,10 @@ class AtomicBroadcaster(object):
     # necessary
     # currently select works because queue uses a pipe underlying,
     # but the select only returns a _reader object thus maybe do a
-    # _reader dictionary to queue dictionary or do a filer but that might be 
+    # _reader dictionary to queue dictionary or do a filer but that might be
     # slow
-    # 
-    # could also just use 1 queue and block that way but i think its a little 
+    #
+    # could also just use 1 queue and block that way but i think its a little
     # ugly to pass in a queue into a constructor but probably best option
     #def __forwarder_worker(self):
     #    """ Wait on multiple Queue objects and forward if timely """
@@ -29,9 +30,7 @@ class AtomicBroadcaster(object):
         while True:
             self.msg_queue.get()
 
-
     # Send message on all channels
     def broadcast(self, message):
         for c in self.channels:
             c.broadcast(message)
-
